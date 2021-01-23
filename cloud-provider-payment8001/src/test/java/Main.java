@@ -3,44 +3,22 @@ import java.util.*;
 
 
 public class Main {
-    static int n;
-    static int ans;
-    static boolean [] col ,udg , dg;
-    static List<List<Integer>> res = new ArrayList<>();
-    static List<Integer> path = new ArrayList<>();
-    public static void main(String[] args) throws IOException {
+
+    public static void main(String[] args) {
+
         Scanner scanner = new Scanner(System.in);
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        int n = scanner.nextInt();
+        int m = scanner.nextInt();
 
-        n = scanner.nextInt();
-        col = new boolean[n];
-        udg = new boolean[2 * n];
-        dg = new boolean[2 * n];
-
-        dfs(0);
-        for(int i = 0 ;i < res.size() ;i ++) {
-            List<Integer> t = res.get(i);
-            for(int j = 0 ;j < t.size() ;j ++) bw.write(t.get(j) + " ");
-            bw.newLine();
+        int [] f = new int[m + 1];
+        f[0] = 1;
+        int val = 0;
+        for(int i = 0; i < n ;i ++){
+            val = scanner.nextInt();
+            for(int j = i ;j <= m ;j ++) f[i] = f[j - val];
         }
-        bw.write(ans + "");
-        bw.close();
+
+        System.out.println(f[m]);
     }
-    public static void dfs(int u) {
-        if(u == n) {
-            ans ++;
-            if(ans < 3) res.add(new ArrayList<>(path));
-            return;
-        }
 
-        for(int i = 0 ;i < n ;i ++) {
-            if(!col[i] && !udg[u - i + n] && !dg[u + i]) {
-                col[i] = udg[u - i + n] = dg[u + i] = true;
-                path.add(i + 1);
-                dfs(u + 1);
-                path.remove(path.size() - 1);
-                col[i] = udg[u - i + n] = dg[u + i] = false;
-            }
-        }
-    }
 }
